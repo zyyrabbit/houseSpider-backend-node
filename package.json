@@ -16,6 +16,7 @@
     }
   },
   "dependencies": {
+    "async": "^2.6.1",
     "cheerio": "^1.0.0-rc.2",
     "commitizen": "^2.9.6",
     "cookie-parser": "~1.4.3",
@@ -24,6 +25,7 @@
     "http-errors": "~1.6.2",
     "iconv-lite": "^0.4.19",
     "morgan": "^1.9.0",
+    "mysql2": "^1.6.1",
     "request": "^2.86.0",
     "request-promise": "^4.2.2",
     "standard-version": "^4.3.0",

@@ -7,6 +7,9 @@ import requestMerge from './requestMerge.js'
 export function htmlStringGet(options, code = 'utf-8') {
   let _options = {
       encoding: null,
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36'
+      },
       transform: function(body) {
         body = Iconv.decode(body, code)
         return cheerio.load(body)
