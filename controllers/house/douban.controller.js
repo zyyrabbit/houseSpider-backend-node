@@ -67,7 +67,6 @@ import mapLimit from 'async/mapLimit'
 			keywords = Array.isArray(keywords) ? [...new Set(keywords)] : [keywords]
 		}
 		let baseUrl = doubanUrls[positionCity] + 'discussion?start='
-		console.log(baseUrl)
 		// 请求页数
 		let pageNos = generateUrls(pageNo)
 		// 控制并发
@@ -78,23 +77,33 @@ import mapLimit from 'async/mapLimit'
 			}, callback)
 			console.timeEnd('  耗时')
 		}, async (err, result) => {
-			if (err) throw err
+			if (err) {
+				console.error(err)
+			}
+			let data = result.reduce((pre, cur) => pre.concat(cur), [])
+			// 如果结果集为空，则不删除
+			if (data.length === 0) {
+				res.send({
+					code: 200,
+					data: []
+				})
+				return
+			}
 			// 每次插入之前先删除
 			await BaseDAO.delete({
 				tableName: 'douban'
 			})
-			let data = result.reduce((pre, cur) => pre.concat(cur), [])
 			// 批量插入数据
 			await BaseDAO.batchInsert({
 				preData: {
 					tableName: 'douban',
 					fields: ['title', 'url', 'price', 'time']
 				},
-				data: [data]
-			}) 
+				data: [data] // 很奇怪和文档不符合，不知道为什么加外面还要加一层[]
+			})
 			res.send({
 				code: 200,
-				data: [data]
+				data: data
 			})
 		})
 	}
